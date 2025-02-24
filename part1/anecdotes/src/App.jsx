@@ -1,5 +1,29 @@
 import { useState } from 'react'
 
+const Heading = ({ text }) => <h2>{ text }</h2>
+
+const Paragraph = ({ text, votes }) => (
+  <p>
+    { text } <br />
+    has { votes} votes
+  </p>
+)
+
+const Button = ({ onClick, text}) => (
+  <button onClick={onClick}> {text} </button>
+)
+
+const MostVotedAnecdote = ({ anecdotes, votes }) => {
+  const maxVotes = Math.max(...votes)
+  const maxVotedIndex = votes.indexOf(maxVotes)
+  
+  if (maxVotes === 0) {
+    return ( <p> No votes </p> )
+  }
+  
+  return <Paragraph text={anecdotes[maxVotedIndex]} votes={maxVotes} />
+}
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -23,10 +47,12 @@ const App = () => {
 
   return (
     <div>
-      <p>{anecdotes[selected]}</p>
-      <p>has {votes[selected]} votes</p>
-      <button onClick={handleVote}>vote</button>
-      <button onClick={() => setSelected(Math.floor(Math.random() * anecdotes.length))}>next anecdote </button> 
+      <Heading text={'Anecdoe of the Day'}> </Heading>
+      <Paragraph text={anecdotes[selected]} votes={votes[selected]} />
+      <Button onClick={handleVote} text={'vote'} />
+      <Button onClick={() => setSelected(Math.floor(Math.random() * anecdotes.length))} text={'next anecdote'} />
+      <Heading text={'Anecdoe with most votes'}> </Heading>
+      <MostVotedAnecdote anecdotes={anecdotes} votes={votes} /> 
     </div>
   )
 }
